@@ -7,10 +7,14 @@ const authRoutes = require("./routes/authRoutes");
 
 const app = express();
 const authMiddleware = require("./middleware/authMiddleware");
+
+const itemRoutes = require("./routes/itemRoutes");
+
 // middleware
 app.use(cors());
 app.use(express.json());
 app.use("/api/auth", authRoutes);
+app.use("/api/items", itemRoutes);
 
 // DB connection
 connectDB();
