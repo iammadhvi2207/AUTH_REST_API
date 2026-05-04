@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Auth + CRUD App</title>
+  <style>
+  body {
+    font-family: 'Segoe UI', sans-serif;
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    margin: 0;
+    padding: 20px;
+    color: white;
+    text-align: center;
+  }
+
+  h2 {
+    margin-top: 30px;
+  }
+
+  .container {
+    max-width: 400px;
+    margin: auto;
+    background: rgba(255,255,255,0.1);
+    padding: 20px;
+    border-radius: 15px;
+    backdrop-filter: blur(10px);
+    box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+  }
+
+  input {
+    width: 90%;
+    padding: 10px;
+    margin: 8px 0;
+    border-radius: 8px;
+    border: none;
+  }
+
+  button {
+    padding: 10px 15px;
+    border: none;
+    background: #00c6ff;
+    color: white;
+    border-radius: 8px;
+    cursor: pointer;
+    margin-top: 10px;
+  }
+
+  button:hover {
+    background: #0072ff;
+  }
+
+  ul {
+    list-style: none;
+    padding: 0;
+  }
+
+  li {
+    background: white;
+    color: black;
+    margin: 10px auto;
+    padding: 10px;
+    border-radius: 10px;
+    display: flex;
+    justify-content: space-between;
+  }
+
+  li button {
+    background: red;
+  }
+</style>
+</head>
+<body>
+
+<h2>Register</h2>
+<input id="regEmail" placeholder="Email">
+<input id="regPassword" type="password" placeholder="Password">
+<button onclick="register()">Register</button>
+
+<h2>Login</h2>
+<input id="loginEmail" placeholder="Email">
+<input id="loginPassword" type="password" placeholder="Password">
+<button onclick="login()">Login</button>
+
+<h2>Create Item</h2>
+<input id="title" placeholder="Title">
+<input id="desc" placeholder="Description">
+<button onclick="createItem()">Add Item</button>
+
+<h2>Items</h2>
+<button onclick="getItems()">Load Items</button>
+<ul id="itemsList"></ul>
+
+<script>
+const BASE_URL = "http://localhost:8000";
+
+// Register
+async function register() {
+  const email = document.getElementById("regEmail").value;
+  const password = document.getElementById("regPassword").value;
+
+  const res = await fetch(BASE_URL + "/api/auth/register", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ email, password })
+  });
+
+  const data = await res.json();
+  alert(data.message);
+}
+
+// Login
+async function login() {
+  const email = document.getElementById("loginEmail").value;
+  const password = document.getElementById("loginPassword").value;
+
+  const res = await fetch(BASE_URL + "/api/auth/login", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ email, password })
+  });
+
+  const data = await res.json();
+  localStorage.setItem("token", data.token);
+  alert("Login successful");
+}
+
+// Create Item
+async function createItem() {
+  const token = localStorage.getItem("token");
+  const title = document.getElementById("title").value;
+  const description = document.getElementById("desc").value;
+
+  await fetch(BASE_URL + "/api/items", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      "Authorization": "Bearer " + token
+    },
+    body: JSON.stringify({ title, description })
+  });
+
+  getItems();
+}
+
+// Get Items
+async function getItems() {
+  const token = localStorage.getItem("token");
+
+  const res = await fetch(BASE_URL + "/api/items", {
+    headers: {
+      "Authorization": "Bearer " + token
+    }
+  });
+
+  const items = await res.json();
+
+  const list = document.getElementById("itemsList");
+  list.innerHTML = "";
+
+  items.forEach(item => {
+    const li = document.createElement("li");
+    li.innerHTML = `
+      ${item.title} - ${item.description}
+      <button onclick="deleteItem('${item._id}')">Delete</button>
+    `;
+    list.appendChild(li);
+  });
+}
+
+// Delete Item
+async function deleteItem(id) {
+  const token = localStorage.getItem("token");
+
+  await fetch(BASE_URL + "/api/items/" + id, {
+    method: "DELETE",
+    headers: {
+      "Authorization": "Bearer " + token
+    }
+  });
+
+  getItems();
+}
+</script>
+
+</body>
+</html>
