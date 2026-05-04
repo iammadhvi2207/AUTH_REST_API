@@ -26,7 +26,7 @@
 ### 1. Clone repo
 
 ```bash
-git clone <your-repo-link>
+git clone https://github.com/iammadhvi2207/AUTH_REST_API.git
 cd AUTH_API
 ```
 
