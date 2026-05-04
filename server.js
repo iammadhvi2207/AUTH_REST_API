@@ -6,7 +6,7 @@ const connectDB = require("./config/db");
 const authRoutes = require("./routes/authRoutes");
 
 const app = express();
-
+const authMiddleware = require("./middleware/authMiddleware");
 // middleware
 app.use(cors());
 app.use(express.json());
@@ -17,9 +17,18 @@ connectDB();
 
 // routes
 app.get("/", (req, res) => {
-  res.send("API is running 🚀");
+  console.log("ROOT HIT");
+  res.status(200).json({ message: "API is running 🚀" });
 });
 
-app.listen(5000, () => {
-  console.log("Server running on port 5000");
+app.get("/protected", authMiddleware, (req, res) => {
+  res.json({
+    message: "Protected route accessed",
+    user: req.user
+  });
 });
+
+app.listen(8000, () => {
+  console.log("Server running on port 8000");
+});
+
