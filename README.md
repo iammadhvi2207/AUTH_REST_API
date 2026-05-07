@@ -47,6 +47,9 @@ AUTH_REST_API/
 │── server.js              # Main server file
 │── package.json
 │── README.md
+```
+
+---
 
 ## ⚙️ Setup
 
