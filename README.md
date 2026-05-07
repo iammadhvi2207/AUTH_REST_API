@@ -1,4 +1,17 @@
-# 🔐 Auth + CRUD API (Node.js + MongoDB)
+<h1 align="center">🔐 Auth + CRUD API (Node.js + MongoDB)</h1>
+
+<p align="center">
+  <img src="https://readme-typing-svg.herokuapp.com/?lines=JWT+Authentication+System;REST+API+with+MongoDB;Built+Using+Node.js+and+Express&center=true&width=500&height=45">
+</p>
+
+<p align="center">
+  <img src="https://img.shields.io/badge/Node.js-Backend-green?style=for-the-badge">
+  <img src="https://img.shields.io/badge/Express.js-Framework-black?style=for-the-badge">
+  <img src="https://img.shields.io/badge/MongoDB-Database-brightgreen?style=for-the-badge">
+  <img src="https://img.shields.io/badge/JWT-Authentication-blue?style=for-the-badge">
+</p>
+
+---
 
 ## 🚀 Features
 
@@ -20,6 +33,20 @@
 * bcryptjs
 
 ---
+
+## 📂 Project Structure
+
+```bash
+AUTH_REST_API/
+│── config/                # Database configuration
+│── controllers/           # Route controllers
+│── middleware/            # Authentication middleware
+│── models/                # Mongoose models
+│── routes/                # API routes
+│── .env                   # Environment variables
+│── server.js              # Main server file
+│── package.json
+│── README.md
 
 ## ⚙️ Setup
 
